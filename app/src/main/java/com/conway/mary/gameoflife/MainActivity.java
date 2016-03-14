@@ -8,18 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.conway.mary.gameoflife.controller.CalculatorTask;
 import com.conway.mary.gameoflife.controller.GameAdapter;
 import com.conway.mary.gameoflife.model.GameModel;
 import com.conway.mary.gameoflife.util.Constant;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG_PLAY = "play";
-    public static final String TAG_PAUSE = "pause";
+    public static final String TAG_STOP = "pause";
     private RecyclerView mRecyclerView;
     private GameAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    CalculatorTask mTask;
     private Button mBtnAction;
     public static GameModel sGameModel;
 
@@ -53,23 +51,26 @@ public class MainActivity extends AppCompatActivity {
     }
     private void clickAction(String action){
         if(action.equals(TAG_PLAY)){
-            mBtnAction.setTag(TAG_PAUSE);
-            mBtnAction.setText("Pause");
+            mBtnAction.setTag(TAG_STOP);
+            mBtnAction.setText(R.string.stop);
             start();
         }else {
             mBtnAction.setTag(TAG_PLAY);
-            mBtnAction.setText("Play");
+            mBtnAction.setText(R.string.stop);
         }
     }
 
     private void start(){
-        final int INTERVAL = 200;
+        final int INTERVAL = 100;
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mBtnAction.getTag().equals(TAG_PLAY))
+                if(mBtnAction.getTag().equals(TAG_PLAY)){
+                    sGameModel.reset();
+                    mAdapter.notifyDataSetChanged();
                     return;
+                }
                 handler.postDelayed(this, INTERVAL);
                 sGameModel.next();
                 mAdapter.setDataSet(sGameModel.getCells());

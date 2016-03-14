@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:background="@android:color/white"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/cell_dimen"
+    android:layout_height="@dimen/cell_dimen"
+    android:gravity="center"
+    android:background="@android:color/black">
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_cell"
+        android:layout_width="@dimen/cell_inner_dimen"
+        android:layout_height="@dimen/cell_inner_dimen"
+        android:background="@android:color/white" />
+</LinearLayout>

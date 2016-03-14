@@ -25,10 +25,12 @@ public class GameAdapter  extends RecyclerView.Adapter<GameAdapter.ViewHolder> {
         public View mView;
         public ViewHolder(View v) {
             super(v);
-            mView = v;
+            mView = v.findViewById(R.id.view_cell);
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(MainActivity.sGameModel.isRun())
+                        return;
                     int pos = (int) v.getTag();
                     if(MainActivity.sGameModel.isAlive(pos)){
                         MainActivity.sGameModel.makeDead(pos);

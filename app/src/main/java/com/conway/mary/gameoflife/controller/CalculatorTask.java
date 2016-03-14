@@ -12,7 +12,7 @@ public class CalculatorTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        final int INTERVAL = 200;
+        final int INTERVAL = 100;
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

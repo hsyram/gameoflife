@@ -1,24 +1,24 @@
 package com.conway.mary.gameoflife.model;
 
-import java.util.List;
-
 /**
  * Created by mary on 3/4/2016.
  */
 public class GameModel {
-    private int rows;
-    private int columns;
+    private int mRows;
+    private int mColumns;
 
-    private Cell[] cells;
+    private Cell[] mCells;
+
+    private boolean mIsRun;
 
     public GameModel(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
-        cells = new Cell[rows*columns];
+        this.mRows = rows;
+        this.mColumns = columns;
+        mCells = new Cell[rows*columns];
         int count =0;
         for (int i = 0; i<rows; i++){
             for (int j = 0; j<columns; j++){
-                cells[count] = new Cell(false, i,j);
+                mCells[count] = new Cell(false, i,j);
                 count++;
             }
 
@@ -26,19 +26,19 @@ public class GameModel {
     }
 
     public int getRows() {
-        return rows;
+        return mRows;
     }
 
     public int getColumns() {
-        return columns;
+        return mColumns;
     }
 
     public Cell[] getCells() {
-        return cells;
+        return mCells;
     }
 
-    public void setCells(Cell[] cells) {
-        this.cells = cells;
+    public void setCells(Cell[] mCells) {
+        this.mCells = mCells;
     }
 
     public boolean isAlive(Cell cell) {
@@ -46,12 +46,20 @@ public class GameModel {
     }
 
     public boolean isAlive(int pos) {
-        return isAlive(cells[pos]);
+        return isAlive(mCells[pos]);
+    }
+
+    public boolean isRun() {
+        return mIsRun;
+    }
+
+    public void setIsRun(boolean isRun) {
+        this.mIsRun = isRun;
     }
 
     public void makeAlive(Cell cell) {
         if (!isOutOfMap(cell)) {
-            for (Cell c: cells){
+            for (Cell c: mCells){
                 if(c.getColumn() == cell.getColumn() && c.getRow() == cell.getRow()){
                     c.setIsAlive(true);
                     break;
@@ -61,12 +69,12 @@ public class GameModel {
     }
 
     public void makeAlive(int pos) {
-        makeAlive(cells[pos]);
+        makeAlive(mCells[pos]);
     }
 
     public void makeDead(Cell cell) {
         if (!isOutOfMap(cell)) {
-            for (Cell c: cells){
+            for (Cell c: mCells){
                 if(c.getColumn() == cell.getColumn() && c.getRow() == cell.getRow()){
                     c.setIsAlive(false);
                     break;
@@ -75,7 +83,7 @@ public class GameModel {
         }
     }
     public void makeDead(int pos) {
-        makeDead(cells[pos]);
+        makeDead(mCells[pos]);
     }
 
     public boolean willLive(Cell cell) {
@@ -83,7 +91,7 @@ public class GameModel {
         for (int i = cell.getRow() - 1; i <= cell.getRow() + 1; i++) {
             for (int j = cell.getColumn() - 1; j <= cell.getColumn() + 1; j++) {
                 if (!(i == cell.getRow() && j == cell.getColumn())) {
-                    for (Cell c: cells){
+                    for (Cell c: mCells){
                         if(c.getColumn() == j && c.getRow() == i){
                             if(c.isAlive())
                                 aliveNeighbours++;
@@ -98,18 +106,25 @@ public class GameModel {
         }
         return aliveNeighbours == 3;
     }
+    public void reset(){
+        for (Cell mCell : mCells) mCell.setIsAlive(false);
+        setIsRun(false);
+    }
 
     public void next() {
-        Cell[] newCells = new Cell[cells.length];
-        for(int i=0; i<cells.length; i++) {
-            Cell cell = new Cell(willLive(cells[i]),cells[i].getRow(), cells[i].getColumn());
+        if(!isRun())
+            setIsRun(true);
+
+        Cell[] newCells = new Cell[mCells.length];
+        for(int i=0; i< mCells.length; i++) {
+            Cell cell = new Cell(willLive(mCells[i]), mCells[i].getRow(), mCells[i].getColumn());
             newCells[i] = cell;
         }
 
-        cells = newCells;
+        mCells = newCells;
     }
 
     private boolean isOutOfMap(Cell cell) {
-        return cell.getRow() < 0 || cell.getRow() > rows - 1 || cell.getColumn() < 0 || cell.getColumn() > columns - 1;
+        return cell.getRow() < 0 || cell.getRow() > mRows - 1 || cell.getColumn() < 0 || cell.getColumn() > mColumns - 1;
     }
 }
